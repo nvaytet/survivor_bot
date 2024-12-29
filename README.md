@@ -1,3 +1,3 @@
-# Snake bot
+# Survivor bot
 
-Template bot for the snakes game
+Template bot for the TilTheNightEnds game
