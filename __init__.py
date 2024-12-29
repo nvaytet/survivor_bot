@@ -2,4 +2,4 @@
 
 # flake8: noqa F401
 
-from .bot import Bot
+from .bot import team

@@ -1,36 +1,75 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
-import numpy as np
-from snakes import Instructions
+from tilthenightends import Levelup, LevelupOptions, Move, Strategist, Team
 
 
-class Bot:
+class Bot1:
     def __init__(self):
-        self.team = "Anaconda"  # This is your team name
+        self.hero = "alaric"
 
-    def run(self, dt, board, players, powerups) -> Instructions:
-        instructions = Instructions()
+    def run(self, t, dt, monsters, players) -> Move:
+        move = Move()
+        move.left = True
+        return move
 
-        me = players[self.team]
 
-        # Projected position: check what is N pixels ahead?
-        n = 8
-        hwidth = (me.thickness - 1) // 2
-        x = int(me.x)
-        y = int(me.y)
+class Bot2:
+    def __init__(self):
+        self.hero = "cedric"
 
-        bounds = {
-            "U": (x, x + 1, y + hwidth + 1, y + n + 1),
-            "D": (x, x + 1, y - n, y - hwidth),
-            "L": (x - n, x - hwidth, y, y + 1),
-            "R": (x + hwidth + 1, x + n + 1, y, y + 1),
-        }
+    def run(self, t, dt, monsters, players) -> Move:
+        move = Move()
+        move.left = True
+        move.up = True
+        return move
 
-        xmin, xmax, ymin, ymax = bounds[me.direction]
-        xmin, xmax = np.clip([xmin, xmax], 0, board.shape[1])
-        ymin, ymax = np.clip([ymin, ymax], 0, board.shape[0])
 
-        if np.any(board[ymin:ymax, xmin:xmax] > 0):
-            instructions.left = True
+class Bot3:
+    def __init__(self):
+        self.hero = "evelyn"
 
-        return instructions
+    def run(self, t, dt, monsters, players) -> Move:
+        move = Move()
+        move.up = True
+        return move
+
+
+class Bot4:
+    def __init__(self):
+        self.hero = "garron"
+
+    def run(self, t, dt, monsters, players) -> Move:
+        move = Move()
+        move.up = True
+        move.right = True
+        return move
+
+
+class Bot5:
+    def __init__(self):
+        self.hero = "isolde"
+
+    def run(self, t, dt, monsters, players) -> Move:
+        move = Move()
+        move.right = True
+        return move
+
+
+class Brain:
+    def __init__(self):
+        # self.bots = []
+        # self.bots.append(Bot1())
+        # self.bots.append(Bot2())
+        # self.bots.append(Bot3())
+        # self.bots.append(Bot4())
+        # self.bots.append(Bot5())
+        return
+
+    def levelup(self, t, dt, players) -> Levelup:
+        return Levelup("alaric", LevelupOptions.player_speed)
+
+
+team = Team(
+    players=[Bot1(), Bot2(), Bot3(), Bot4(), Bot5()],
+    strategist=Strategist(Brain()),
+)
