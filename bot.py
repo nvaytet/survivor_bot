@@ -1,68 +1,36 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
-from tilthenightends import Levelup, LevelupOptions, Move, Strategist, Team
+import numpy as np
+from tilthenightends import Levelup, LevelupOptions, Vector, Strategist, Team, Towards
 
 
-class Bot1:
-    def __init__(self):
-        self.hero = "alaric"
+class Leader:
+    def __init__(self, hero: str):
+        self.hero = hero
+        self.next_turn = 5.0
+        self.vector = Vector(1, 1)
 
-    def run(self, t, dt, monsters, players) -> Move:
-        move = Move()
-        move.left = True
-        return move
-
-
-class Bot2:
-    def __init__(self):
-        self.hero = "cedric"
-
-    def run(self, t, dt, monsters, players) -> Move:
-        move = Move()
-        move.left = True
-        move.up = True
-        return move
+    def run(self, t, dt, monsters, players) -> Vector | Towards | None:
+        if t > self.next_turn:
+            self.vector = Vector(*np.random.random(2) * 2 - 1)
+            self.next_turn += 5.0
+        return self.vector
 
 
-class Bot3:
-    def __init__(self):
-        self.hero = "evelyn"
+class Follower:
+    def __init__(self, hero: str, following: str):
+        self.hero = hero
+        self.following = following
 
-    def run(self, t, dt, monsters, players) -> Move:
-        move = Move()
-        move.up = True
-        return move
-
-
-class Bot4:
-    def __init__(self):
-        self.hero = "garron"
-
-    def run(self, t, dt, monsters, players) -> Move:
-        move = Move()
-        move.up = True
-        move.right = True
-        return move
-
-
-class Bot5:
-    def __init__(self):
-        self.hero = "isolde"
-
-    def run(self, t, dt, monsters, players) -> Move:
-        move = Move()
-        move.right = True
-        return move
+    def run(self, t, dt, monsters, players) -> Vector | Towards | None:
+        for player in players:
+            if player["hero"] == self.following:
+                return Towards(player["x"], player["y"])
+        return None
 
 
 class Brain:
     def __init__(self):
-        # self.bots = []
-        # self.bots.append(Bot1())
-        # self.bots.append(Bot2())
-        # self.bots.append(Bot3())
-        # self.bots.append(Bot4())
-        # self.bots.append(Bot5())
         return
 
     def levelup(self, t, dt, players) -> Levelup:
@@ -70,6 +38,12 @@ class Brain:
 
 
 team = Team(
-    players=[Bot1(), Bot2(), Bot3(), Bot4(), Bot5()],
+    players=[
+        Leader(hero="alaric"),
+        Follower(hero="cedric", following="alaric"),
+        Follower(hero="evelyn", following="alaric"),
+        Follower(hero="garron", following="alaric"),
+        Follower(hero="isolde", following="alaric"),
+    ],
     strategist=Strategist(Brain()),
 )
