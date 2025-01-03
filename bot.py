@@ -31,10 +31,17 @@ class Follower:
 
 class Brain:
     def __init__(self):
+        self.switch = True
         return
 
     def levelup(self, t: float, info: dict, players: dict) -> Levelup:
-        return Levelup("alaric", LevelupOptions.player_speed)
+        if self.switch:
+            out = Levelup("alaric", LevelupOptions.player_speed)
+        else:
+            out = Levelup("evelyn", LevelupOptions.player_health)
+        self.switch = not self.switch
+        return out
+        # return Levelup("alaric", LevelupOptions.player_speed)
 
 
 team = Team(
