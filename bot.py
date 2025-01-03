@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 import numpy as np
-from tilthenightends import Levelup, LevelupOptions, Vector, Strategist, Team, Towards
+from tilthenightends import Levelup, LevelupOptions, Vector, Team, Towards
 
 
 class Leader:
@@ -33,7 +33,7 @@ class Brain:
     def __init__(self):
         return
 
-    def levelup(self, t, dt, players) -> Levelup:
+    def levelup(self, t: float, info: dict, players: dict) -> Levelup:
         return Levelup("alaric", LevelupOptions.player_speed)
 
 
@@ -45,5 +45,5 @@ team = Team(
         Follower(hero="garron", following="alaric"),
         Follower(hero="isolde", following="alaric"),
     ],
-    strategist=Strategist(Brain()),
+    strategist=Brain(),
 )
