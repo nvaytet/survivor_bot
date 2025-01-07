@@ -47,9 +47,10 @@ class Brain:
 team = Team(
     players=[
         Leader(hero="alaric"),
-        Follower(hero="cedric", following="alaric"),
-        Follower(hero="evelyn", following="alaric"),
+        # Follower(hero="cedric", following="alaric"),
+        Follower(hero="kaelen", following="alaric"),
         Follower(hero="garron", following="alaric"),
+        Follower(hero="theron", following="alaric"),
         Follower(hero="isolde", following="alaric"),
     ],
     strategist=Brain(),
