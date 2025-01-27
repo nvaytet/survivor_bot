@@ -50,8 +50,8 @@ team = Team(
         # Follower(hero="cedric", following="alaric"),
         Follower(hero="kaelen", following="alaric"),
         Follower(hero="garron", following="alaric"),
-        Follower(hero="theron", following="alaric"),
-        Follower(hero="isolde", following="alaric"),
+        Follower(hero="selene", following="alaric"),
+        Follower(hero="lyra", following="alaric"),
     ],
     strategist=Brain(),
 )
