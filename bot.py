@@ -4,6 +4,9 @@ import numpy as np
 from tilthenightends import Levelup, LevelupOptions, Vector, Team, Towards
 
 
+RNG = np.random.default_rng(seed=12)
+
+
 class Leader:
     def __init__(self, hero: str):
         self.hero = hero
@@ -11,8 +14,10 @@ class Leader:
         self.vector = Vector(1, 1)
 
     def run(self, t, dt, monsters, players) -> Vector | Towards | None:
+        # print("Monster info:", monsters)
+        # print("PLAYER INFO:", players)
         if t > self.next_turn:
-            self.vector = Vector(*np.random.random(2) * 2 - 1)
+            self.vector = Vector(*RNG.random(2) * 2 - 1)
             self.next_turn += 5.0
         return self.vector
 
@@ -23,31 +28,26 @@ class Follower:
         self.following = following
 
     def run(self, t, dt, monsters, players) -> Vector | Towards | None:
-        for player in players:
-            if player["hero"] == self.following:
-                return Towards(player["x"], player["y"])
+        for name, player in players.items():
+            if name == self.following:
+                return Towards(player.x, player.y)
         return None
 
 
 class Brain:
     def __init__(self):
-        self.switch = True
-        return
+        pass
 
     def levelup(self, t: float, info: dict, players: dict) -> Levelup:
-        if self.switch:
-            out = Levelup("alaric", LevelupOptions.player_speed)
-        else:
-            out = Levelup("evelyn", LevelupOptions.player_health)
-        self.switch = not self.switch
-        return out
-        # return Levelup("alaric", LevelupOptions.player_speed)
+        # A very random choice
+        hero = RNG.choice(list(players.keys()))
+        what = RNG.choice(list(LevelupOptions))
+        return Levelup(hero, what)
 
 
 team = Team(
     players=[
         Leader(hero="alaric"),
-        # Follower(hero="cedric", following="alaric"),
         Follower(hero="kaelen", following="alaric"),
         Follower(hero="garron", following="alaric"),
         Follower(hero="selene", following="alaric"),
