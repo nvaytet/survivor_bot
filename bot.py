@@ -13,9 +13,7 @@ class Leader:
         self.next_turn = 5.0
         self.vector = Vector(1, 1)
 
-    def run(self, t, dt, monsters, players) -> Vector | Towards | None:
-        # print("Monster info:", monsters)
-        # print("PLAYER INFO:", players)
+    def run(self, t, dt, monsters, players, pickups) -> Vector | Towards | None:
         if t > self.next_turn:
             self.vector = Vector(*RNG.random(2) * 2 - 1)
             self.next_turn += 5.0
@@ -27,7 +25,7 @@ class Follower:
         self.hero = hero
         self.following = following
 
-    def run(self, t, dt, monsters, players) -> Vector | Towards | None:
+    def run(self, t, dt, monsters, players, pickups) -> Vector | Towards | None:
         for name, player in players.items():
             if name == self.following:
                 return Towards(player.x, player.y)
@@ -50,7 +48,7 @@ team = Team(
         Leader(hero="alaric"),
         Follower(hero="kaelen", following="alaric"),
         Follower(hero="garron", following="alaric"),
-        Follower(hero="selene", following="alaric"),
+        Follower(hero="isolde", following="alaric"),
         Follower(hero="lyra", following="alaric"),
     ],
     strategist=Brain(),
